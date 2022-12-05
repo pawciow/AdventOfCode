@@ -3,6 +3,7 @@
 #include "SecondTask.hpp"
 #include "TaskThree.hpp"
 #include "TaskFour.hpp"
+#include "TaskFive.hpp"
 #include <regex>
 #include <string>
 void checkResults(TaskBase& task, std::string fileName)
@@ -22,7 +23,10 @@ int main() {
 //    TaskThree task;
 //    checkResults(task, "inputs/taskThree.txt");
 
-    TaskFour task;
-    checkResults(task, "inputs/taskFour.txt");
+//    TaskFour task;
+//    checkResults(task, "inputs/taskFour.txt");
+    TaskFive task;
+    checkResults(task, "inputs/taskFive.txt");
+
     return 0;
 }
