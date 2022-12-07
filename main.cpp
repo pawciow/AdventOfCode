@@ -7,6 +7,8 @@
 #include <regex>
 #include <string>
 #include "TaskSix.hpp"
+#include "TaskSeven.hpp"
+
 void checkResults(TaskBase& task, std::string fileName)
 {
     task.provideFileName(fileName);
@@ -30,8 +32,11 @@ int main() {
 //    TaskFive task;
 //    checkResults(task, "inputs/taskFive.txt");
 
-    TaskSix task;
-    checkResults(task, "inputs/taskSix.txt");
+//    TaskSix task;
+//    checkResults(task, "inputs/taskSix.txt");
+
+    TaskSeven task;
+    checkResults(task, "inputs/taskSeven.txt");
 
     return 0;
 }

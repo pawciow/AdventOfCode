@@ -21,7 +21,7 @@ add_executable(
         TaskBase.hpp
         TaskFour.hpp
         TaskFive.hpp
-        TaskSix.hpp)
+        TaskSix.hpp TaskSeven.hpp)
 
 target_include_directories(    ${PROJECT_NAME}
         PUBLIC
