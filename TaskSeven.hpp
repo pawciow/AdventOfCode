@@ -10,21 +10,17 @@
 #include <ranges>
 #include <iomanip>
 #include <iostream>
-
+#include <queue>
+#include <numeric>
 
 class TaskSeven : public TaskBase{
 public:
-    TaskSeven()
-    {
-        Node root("/", {});
-        m_root = std::make_shared<Node>(root);
-    }
     void assertResults() override {
         auto firstResult = solveFirstTask();
-        assert(firstResult == 0);
+        assert(firstResult == 1086293);
 
         auto secondResult = solveSecondTask();
-        assert(secondResult == 0);
+        assert(secondResult == 366028);
     }
 
     void readData() override {
@@ -41,10 +37,13 @@ public:
 
     void parseInput()
     {
+        Node root("/", {});
+        m_root = std::make_shared<Node>(root);
+
         std::shared_ptr<Node> processedNode = m_root;
         std::string type, name;
         unsigned int size;
-        for(const auto& line : m_input)
+        for(const auto& line : m_input | std::views::drop(1))
         {
             std::stringstream ss;
             ss << line;
@@ -111,14 +110,16 @@ public:
         unsigned int getSize()
         {
             unsigned int result = 0;
-            for(const auto node : m_nodes)
-            {
-                result += node->getSize();
-            }
-            for(const auto& file : m_files)
-            {
-                result += file.m_size;
-            }
+            result = std::accumulate(m_nodes.begin(), m_nodes.end(),result,
+                                     [](auto a, auto b){
+                return a + b->getSize();
+            });
+
+            result = std::accumulate(m_files.begin(), m_files.end(),result,
+                                     [](auto a, auto b){
+                return a + b.m_size;
+            });
+
             return result;
         }
 
@@ -128,7 +129,6 @@ public:
             for(const auto& node : m_nodes)
             {
                 auto nodeSize = node->getSize();
-                std::cout << "Node: " << node->m_name << " contains: " << nodeSize << std::endl;
                 if(nodeSize < threshold)
                 {
                     result += nodeSize;
@@ -142,6 +142,25 @@ public:
             }
             return result;
         }
+
+        void addCandidateToDelete(
+                std::priority_queue<unsigned int, std::vector<unsigned int>, std::greater<unsigned int>> & queue,
+                unsigned int minimumThreshold)
+        {
+            for(const auto& node : m_nodes)
+            {
+                auto nodeSize = node->getSize();
+                if(nodeSize > minimumThreshold)
+                {
+                    queue.push(nodeSize);
+                }
+            }
+
+            for(const auto& node: m_nodes)
+            {
+                node->addCandidateToDelete(queue, minimumThreshold);
+            }
+        }
     };
 
     unsigned int solveFirstTask() override
@@ -152,15 +171,26 @@ public:
         auto result = m_root->sumSizeIfLessThan();
         std::cout << "For my first star result is: " << result << std::endl;
 
-        return {};
+        return result;
     }
     unsigned int solveSecondTask() override
     {
-        return {};
+        readData();
+        parseInput();
+        auto totalSpace = 70000000;
+        auto requiredSpace = 30000000;
+        auto freeSpace = totalSpace - m_root->getSize();
+        auto needsToRemove = requiredSpace - freeSpace;
+
+        m_root->addCandidateToDelete(m_directorySizes, needsToRemove);
+        std::cout << "For my second star result is: " << m_directorySizes.top() << std::endl;
+
+        return m_directorySizes.top();
     }
 
 private:
     std::shared_ptr<Node> m_root;
+    std::priority_queue<unsigned int, std::vector<unsigned int>, std::greater<unsigned int>> m_directorySizes;
 
     std::string m_inputFileName;
     std::vector<std::string> m_input;
