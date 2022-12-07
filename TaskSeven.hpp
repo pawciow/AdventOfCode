@@ -80,15 +80,23 @@ public:
             }
             size = std::stoi(type);
             ss >> name;
-            processedNode->m_nodes.push_back(std::make_shared<File>(name,size, processedNode));
+            processedNode->m_files.push_back({name,size});
         }
     }
+
+    struct File{
+        File(std::string name, unsigned int size) : m_name(name), m_size(size) {}
+        std::string m_name;
+        unsigned int m_size;
+    };
+
     struct Node {
     public:
         Node(std::string name, std::weak_ptr<Node> parent) : m_name(name), m_parent(parent) {}
         std::string m_name;
         std::weak_ptr<Node> m_parent;
         std::vector<std::shared_ptr<Node>> m_nodes;
+        std::vector<File> m_files;
 
         std::shared_ptr<Node> getChild(const std::string& childName)
         {
@@ -100,18 +108,21 @@ public:
             throw std::runtime_error("Messed up finding child!");
             return {};
         }
-        virtual unsigned int getSize()
+        unsigned int getSize()
         {
             unsigned int result = 0;
             for(const auto node : m_nodes)
             {
-                std::cout << "Visiting node: " << node->m_name << std::endl;
                 result += node->getSize();
+            }
+            for(const auto& file : m_files)
+            {
+                result += file.m_size;
             }
             return result;
         }
 
-        unsigned int getSizeIfLessThan(unsigned int threshold = 100000)
+        unsigned int sumSizeIfLessThan(unsigned int threshold = 100000)
         {
             unsigned int result = 0;
             for(const auto& node : m_nodes)
@@ -123,25 +134,14 @@ public:
                     result += nodeSize;
                 }
             }
-            auto isHasSubdirectories = [](const std::shared_ptr<Node> nodePtr){
-                return nodePtr->m_nodes.size() != 0;
-            };
-            for(const auto& node: m_nodes | std::views::filter(isHasSubdirectories))
+
+            for(const auto& node: m_nodes)
             {
-                std::cout << "Shoudl visit node : " << node->m_name;
+                auto additional = node->sumSizeIfLessThan(threshold);
+                result += additional;
             }
             return result;
         }
-    };
-
-    struct File : public Node{
-        File(std::string name, unsigned int size, std::weak_ptr<Node> parent) : Node(name, parent), m_size(size) {}
-        unsigned int m_size;
-        virtual unsigned int getSize() override
-        {
-            return m_size;
-        }
-
     };
 
     unsigned int solveFirstTask() override
@@ -149,7 +149,7 @@ public:
         readData();
         parseInput();
 
-        auto result = m_root->getSizeIfLessThan();
+        auto result = m_root->sumSizeIfLessThan();
         std::cout << "For my first star result is: " << result << std::endl;
 
         return {};
