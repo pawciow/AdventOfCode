@@ -8,6 +8,7 @@
 #include <string>
 #include "TaskSix.hpp"
 #include "TaskSeven.hpp"
+#include "TaskEight.hpp"
 
 void checkResults(TaskBase& task, std::string fileName)
 {
@@ -35,8 +36,10 @@ int main() {
 //    TaskSix task;
 //    checkResults(task, "inputs/taskSix.txt");
 
-    TaskSeven task;
-    checkResults(task, "inputs/taskSeven.txt");
+//    TaskSeven task;
+//    checkResults(task, "inputs/taskSeven.txt");
 
+    TaskEight task;
+    checkResults(task, "inputs/taskEight.txt");
     return 0;
 }
