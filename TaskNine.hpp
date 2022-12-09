@@ -27,10 +27,10 @@ public:
     void assertResults() override
     {
         auto firstResult = solveFirstTask();
-//        assert(firstResult == 13); // for input 6190 for test1 13
+        assert(firstResult == 6190);
 
         auto secondResult = solveSecondTask();
-        assert(secondResult == 36);
+        assert(secondResult == 2516);
     }
 
     void readData() override
@@ -50,13 +50,23 @@ public:
 
     unsigned int solveFirstTask() override
     {
+        m_orders = {};
+        m_tailPositions = {{0,0}};
+        m_rope=std::vector<Position>(2,{0,0});
         unsigned int result = 0;
         readData();
         parseInput();
         while (not m_orders.empty())
         {
             auto order = m_orders.front();
-            processMove(order);
+            for(auto i = 0; i < order.m_amount; i++)
+            {
+                auto& head = m_rope[0];
+                auto& tail = m_rope[1];
+
+                simpleMove(order.m_direction, head);
+                moveTail(head, tail);
+            }
             m_orders.pop();
         }
         result = m_tailPositions.size();
@@ -66,17 +76,27 @@ public:
 
     unsigned int solveSecondTask() override
     {
+        m_orders = {};
+        m_tailPositions = {{0,0}};
+        m_rope=std::vector<Position>(10,{0,0});
         unsigned int result = 0;
         readData();
         parseInput();
         while (not m_orders.empty())
         {
             auto order = m_orders.front();
-            processMove(order);
+            for(auto i = 0; i < order.m_amount; i++)
+            {
+                simpleMove(order.m_direction,m_rope[0]);
+                for(auto it = 0; it < m_rope.size()-1; it++)
+                {
+                    moveTail(m_rope[it], m_rope[it+1]);
+                }
+            }
             m_orders.pop();
         }
         result = m_tailPositions.size();
-        std::cout << "For my first star result is: " << result << std::endl;
+        std::cout << "For my second star result is: " << result << std::endl;
         return result;
     }
 
@@ -86,21 +106,8 @@ private:
 
     std::queue<MoveOrder> m_orders;
 
-    Position m_TailPosition = {0,0};
-    Position m_HeadPosition = {0,0};
-    std::set<Position> m_tailPositions{m_TailPosition};
-
-    void processMove(MoveOrder order)
-    {
-        for(auto i = 0; i < order.m_amount; i++)
-        {
-            auto lastHeadPosition = m_HeadPosition;
-            simpleMove(order.m_direction, m_HeadPosition);
-            moveTail(order.m_direction,lastHeadPosition);
-//            std::cout << "Positions after move: " << m_TailPosition.first << "," << m_TailPosition.second <<
-//                  " head: " << m_HeadPosition.first << "," << m_HeadPosition.second << std::endl;
-        }
-    }
+    std::set<Position> m_tailPositions{ {0,0}};
+    std::vector<Position> m_rope{2,{0,0}};
 
     void simpleMove(MoveOrder::Direction direction, Position& position)
     {
@@ -124,46 +131,54 @@ private:
         }
     }
 
-    void moveRope(MoveOrder::Direction direction)
+    void moveTail(Position& head, Position& tail)
     {
-
-    }
-    void moveTail(MoveOrder::Direction direction, Position& lastHeadPosition)
-    {
-        if(tailNotNeedsMoving())
+        if(tailNotNeedsMoving(head, tail))
         {
             return;
         }
-//        std::cout << "Needs to move for positions tail: " << m_TailPosition.first << "," << m_TailPosition.second <<
-//                  " head: " << m_HeadPosition.first << "," << m_HeadPosition.second << std::endl;
-//        if(m_HeadPosition.first == m_TailPosition.first or m_HeadPosition.second == m_TailPosition.second)
-//        {
-//            simpleMove(direction, m_TailPosition);
-//        }
-//        else
-        {
-            m_TailPosition = lastHeadPosition;
-        }
-        m_tailPositions.insert(m_TailPosition);
+
+        findNewPosition(head,tail);
+        m_tailPositions.insert(m_rope.back());
     }
 
-    bool tailNotNeedsMoving()
+    void findNewPosition(const Position& head, Position& tail)
     {
-        if(m_HeadPosition == m_TailPosition)
+        if(head.first > tail.first)
+        {
+            tail.first++;
+        }
+        else if(head.first < tail.first)
+        {
+            tail.first--;
+        }
+
+        if(head.second > tail.second)
+        {
+            tail.second++;
+        }
+        else if(head.second < tail.second)
+        {
+            tail.second--;
+        }
+    }
+    bool tailNotNeedsMoving(Position left, Position right)
+    {
+        if(left == right)
             return true;
-        auto x_distance = abs(m_HeadPosition.first - m_TailPosition.first);
-        auto y_distance = abs(m_HeadPosition.second - m_TailPosition.second);
+        auto x_distance = abs(left.first - right.first);
+        auto y_distance = abs(left.second - right.second);
         if(x_distance == 2)
             return false;
         if(y_distance == 2)
             return false;
-//        if(x_distance y_distance)
-//            return false;
+
         return true;
     }
 
     void parseInput()
     {
+        m_orders = {};
         std::stringstream ss;
         std::string direction;
         unsigned short amount;
