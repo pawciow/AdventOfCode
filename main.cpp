@@ -11,6 +11,8 @@
 #include "TaskEight.hpp"
 #include "TaskNine.hpp"
 
+#include "TaskEleven.hpp"
+
 void checkResults(TaskBase& task, std::string fileName)
 {
     task.provideFileName(fileName);
@@ -43,7 +45,7 @@ int main() {
 //    TaskEight task;
 //    checkResults(task, "inputs/taskEight.txt");
 
-    TaskNine task;
-    checkResults(task, "inputs/taskNine.txt");
+    TaskEleven task;
+    checkResults(task, "inputs/taskEleven.txt");
     return 0;
 }
