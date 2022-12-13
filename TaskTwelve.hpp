@@ -16,10 +16,10 @@ public:
     void assertResults() override
     {
         auto firstResult = solveFirstTask();
-        assert(firstResult == 31); //
+        assert(firstResult == 528); //
 
-//        auto secondResult = solveSecondTask();
-//        assert(secondResult == 39109444654);
+        auto secondResult = solveSecondTask();
+        assert(secondResult == 522);
     }
 
     void readData() override
@@ -39,15 +39,50 @@ public:
     virtual unsigned int solveFirstTask() override
     {
         unsigned int result = 0;
+        m_data = {};
         readData();
         parseData();
-        result = createGraph();
+
+        myGraph graph(m_data);
+        auto start = graph.findTile('S');
+        auto endTile = graph.findTile('E');
+        graph.calculateShortestPaths(start);
+        result = graph.tiles[endTile.y][endTile.x].shortestPath;
+
         std::cout << "For my first star result is: " << result << std::endl;
         return result;
     }
     unsigned int solveSecondTask() override
     {
         unsigned int result = 0;
+        m_data = {};
+        readData();
+        parseData();
+
+        std::priority_queue<unsigned int, std::vector<unsigned int>, std::greater<unsigned int>> results;
+        for(auto y = 0; y < m_data.size(); y++)
+            for(auto x = 0; x < m_data[y].size(); x++)
+            {
+                if(m_data[y][x] == 'S' or m_data[y][x] == 'a')
+                {
+                    myGraph graph(m_data);
+                    auto start = graph.getTile({y,x});
+                    auto endTile = graph.findTile('E');
+                    graph.calculateShortestPaths(start);
+                    auto currentResult = graph.tiles[endTile.y][endTile.x].shortestPath;
+                    if(currentResult != std::numeric_limits<unsigned int >::max() )
+                    results.push(currentResult);
+                }
+            }
+
+        result = results.top();
+        while (not results.empty())
+        {
+            auto val = results.top();
+            results.pop();
+            std::cout << " Results:" << val << " ";
+        }
+        std::cout << "\n For my second star result is: " << result << std::endl;
         return result;
     }
 private:
@@ -64,6 +99,9 @@ private:
 
     static bool checkIfPossibleToClimb(char lhs, char rhs)
     {
+//        if(rhs == 'S')
+//            return false;
+//
         return lhs == rhs
                 or lhs > rhs
                 or abs(lhs - rhs) == 1
@@ -71,12 +109,6 @@ private:
                 or lhs == 'S';
     }
 
-    unsigned int createGraph()
-    {
-        myGraph graph(m_data);
-        graph.calculateShortestPaths();
-         return graph.tiles[20][158].shortestPath;
-    }
 
     std::string m_inputFileName;
     std::vector<std::string> m_input;
@@ -113,21 +145,20 @@ private:
                 tiles.push_back(rowVec);
             }
         }
-        void calculateShortestPaths()
+        void calculateShortestPaths(Tile& startingTile)
         {
-            auto start = findTile('S');
             auto end = findTile('E');
             std::cout << " End at " << end.y <<  "," << end.x << std::endl;
 
             auto largestVisited = 'a';
-            start.shortestPath = 0;
-            tiles[start.y][start.x].shortestPath = 0;
+            startingTile.shortestPath = 0;
+            tiles[startingTile.y][startingTile.x].shortestPath = 0;
             auto cmp = [&](Coords lhs, Coords rhs){
                 return  tiles[lhs.first][lhs.second].shortestPath > tiles[rhs.first][rhs.second].shortestPath;
             };
 
             PQueue tileQueue(cmp);
-            tileQueue.push( {start.y,start.x});
+            tileQueue.push( {startingTile.y,startingTile.x});
             while (not tileQueue.empty())
             {
                 auto pair = tileQueue.top();
