@@ -84,10 +84,12 @@ class TaskThirteen : public TaskBase {
 
     void assertResults() override {
         auto firstResult = solveFirstTask();
-        assert(firstResult == 6415); //
+//        assert(firstResult == 13); // test data
+        assert(firstResult == 6415);
 
-//        auto secondResult = solveSecondTask();
-//        assert(secondResult == 39109444654);
+        auto secondResult = solveSecondTask();
+//        assert(secondResult == 140); // test data
+        assert(secondResult == 20056);
     }
 
     void readData() override {
@@ -116,7 +118,6 @@ class TaskThirteen : public TaskBase {
             if(ordering == std::weak_ordering::less)
             {
                 result += pairNumber;
-                std::cout << "Pair number " << pairNumber << " is correct" << std::endl;
             }
         }
         std::cout << "For my first star result is: " << result << std::endl;
@@ -124,7 +125,32 @@ class TaskThirteen : public TaskBase {
     }
 
     virtual unsigned int solveSecondTask() override {
-        unsigned int result = 0;
+        unsigned int result = 1;
+        m_data = {};
+        readData();
+        parseData();
+
+        Packets divider1 = std::vector<Packets>{std::vector<Packets>{static_cast<unsigned int>(2)}};
+        m_data.push_back(divider1);
+        Packets divider2 = std::vector<Packets>{std::vector<Packets>{static_cast<unsigned int>(6)}};
+        m_data.push_back(divider2);
+
+        std::sort(m_data.begin(), m_data.end(),[](auto lhs, auto rhs){
+            return lhs.compare(rhs) == std::weak_ordering::less;
+        });
+
+        for(auto i = 0; i < m_data.size(); i++)
+        {
+            auto element = m_data[i];
+            std::cout << element << std::endl;
+            if(element.compare(divider1) == std::weak_ordering::equivalent
+                or element.compare(divider2) == std::weak_ordering::equivalent)
+            {
+                result *= (i+1);
+            }
+        }
+        std::cout << "For my second star result is: " << result << std::endl;
+
         return result;
     }
 
@@ -170,7 +196,6 @@ private:
                 std::string num(line.begin()+j, line.begin()+it);
                 while (num.starts_with(',') or num.starts_with('['))
                     num.erase(0,1);
-                std::cout << num << std::endl;
                 j = it;
                 if(num.empty())
                     return {};
@@ -202,17 +227,6 @@ private:
         }
     }
 
-    std::vector<std::string> split (const std::string &s, char delim) {
-        std::vector<std::string> result;
-        std::stringstream ss(s);
-        std::string item;
-
-        while (getline(ss, item, delim)) {
-            result.push_back(item);
-        }
-
-        return result;
-    }
     std::string m_inputFileName;
     std::vector<std::string> m_input;
 
