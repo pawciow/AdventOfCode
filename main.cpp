@@ -50,11 +50,11 @@ int main() {
 //    TaskEleven task;
 //    checkResults(task, "inputs/taskEleven.txt");
 
-//    TaskTwelve task;
-//    checkResults(task, "inputs/taskTwelve.txt");
+    TaskTwelve task;
+    checkResults(task, "inputs/taskTwelve.txt");
 
-    TaskThirteen task;
-    checkResults(task, "inputs/taskThirteen.txt");
+//    TaskThirteen task;
+//    checkResults(task, "inputs/taskThirteen.txt");
 
     return 0;
 }
