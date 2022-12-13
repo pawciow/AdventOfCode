@@ -126,6 +126,8 @@ private:
                     num.erase(0,1);
                 std::cout << num << std::endl;
                 j = it;
+                if(num.empty())
+                    return {};
                 return std::stoi(num);
             }
         }
