@@ -14,6 +14,7 @@
 #include "TaskEleven.hpp"
 #include "TaskTwelve.hpp"
 #include "TaskThirteen.hpp"
+#include "TaskFourteen.hpp"
 
 void checkResults(TaskBase& task, std::string fileName)
 {
@@ -50,11 +51,14 @@ int main() {
 //    TaskEleven task;
 //    checkResults(task, "inputs/taskEleven.txt");
 
-    TaskTwelve task;
-    checkResults(task, "inputs/taskTwelve.txt");
+//    TaskTwelve task;
+//    checkResults(task, "inputs/taskTwelve.txt");
 
 //    TaskThirteen task;
 //    checkResults(task, "inputs/taskThirteen.txt");
+
+    TaskFourteen task;
+    checkResults(task, "inputs/taskFourteen.txt");
 
     return 0;
 }
