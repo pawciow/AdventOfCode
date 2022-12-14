@@ -56,7 +56,7 @@ public:
         });
 
 
-        auto sandQuantity =23;
+        auto sandQuantity = 25;
         for(auto i = 0; i < sandQuantity; i++)
             sandFalls();
 
@@ -133,35 +133,41 @@ private:
     void processMove(Coords& position, unsigned int yBoundary)
     {
         auto& [x, y] = position;
-        while(isTileEmpty({x,y+1}))
+        auto isMovePossible =
+                isTileEmpty({x,y+1})
+                or isTileEmpty({x-1,y+1})
+                or isTileEmpty({x+1,y+1});
+        while(isTileEmpty({x,y+1})
+                or isTileEmpty({x-1,y+1})
+                or isTileEmpty({x+1,y+1}))
         {
-            m_tiles[y][x] = Tile::air;
-            position.second++;
-            m_tiles[y][x] = Tile::sand;
-        }
+            if(isTileEmpty({x,y+1}))
+            {
+                m_tiles[y][x] = Tile::air;
+                position.second++;
+                m_tiles[y][x] = Tile::sand;
+                continue;
+            }
 
-        auto proposedLeftSide = std::make_pair(x-1,y+1);
-        while(isTileEmpty(proposedLeftSide))
-        {
-            m_tiles[y][x] = Tile::air;
-            position.first--;
-            position.second++;
-            m_tiles[y][x] = Tile::sand;
+            const auto& proposedLeftSide = std::make_pair(x-1,y+1);
+            if(isTileEmpty(proposedLeftSide))
+            {
+                m_tiles[y][x] = Tile::air;
+                position.first--;
+                position.second++;
+                m_tiles[y][x] = Tile::sand;
+                continue;
+            }
 
-            proposedLeftSide.first--;
-            proposedLeftSide.second++;
-        }
-
-        const auto& proposedRightSide = std::make_pair(x+1,y+1);
-        while(isTileEmpty(proposedRightSide))
-        {
-            m_tiles[y][x] = Tile::air;
-            position.first++;
-            position.second++;
-            m_tiles[y][x] = Tile::sand;
-
-            proposedLeftSide.first++;
-            proposedLeftSide.second++;
+            const auto& proposedRightSide = std::make_pair(x+1,y+1);
+            if(isTileEmpty(proposedRightSide))
+            {
+                m_tiles[y][x] = Tile::air;
+                position.first++;
+                position.second++;
+                m_tiles[y][x] = Tile::sand;
+                continue;
+            }
         }
     }
 
