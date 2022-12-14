@@ -19,11 +19,9 @@ public:
 
     void assertResults() override
     {
+        // Asserts inside of solveSecondTask -> they are strings
         auto firstResult = solveFirstTask();
-        assert(firstResult == 0);
-
         auto secondResult = solveSecondTask();
-        assert(secondResult == 0);
     }
 
     void readData() override
@@ -52,6 +50,7 @@ public:
         }
         auto result = getResult();
         std::cout << "For my first star result is: " << result << std::endl;
+        assert(result == "ZWHVFWQWW");
         return {};
     }
     unsigned int solveSecondTask() override
@@ -65,6 +64,7 @@ public:
         }
         auto result = getResult();
         std::cout << "For my second star result is: " << result << std::endl;
+        assert(result == "HZFZCCWWV");
         return {};
     }
 private:
@@ -121,12 +121,11 @@ private:
     void parseOrders()
     {
         auto ordersView = std::ranges::subrange(m_input.begin() + m_descriptionNumber + 2, m_input.end());
-
-        std::string move, from, to;
-        unsigned int amount,start,destination;
-        std::stringstream stringStream;
         for(const auto& el: ordersView)
         {
+            std::stringstream stringStream;
+            std::string move, from, to;
+            unsigned int amount,start,destination;
             stringStream << el;
             stringStream >> move >> amount >> from >> start >> to >> destination;
             assert(start != 0);

@@ -36,8 +36,8 @@ void checkAll()
     Day4 task4;
     checkResults(task4, "inputs/taskFour.txt");
 
-//    Day5 task5;
-//    checkResults(task5, "inputs/taskFive.txt");
+    Day5 task5;
+    checkResults(task5, "inputs/taskFive.txt");
 
     Day6 task6;
     checkResults(task6, "inputs/taskSix.txt");

@@ -42,8 +42,8 @@ public:
         unsigned int calories = 0;
         for (const auto &line: m_input) {
             if (line == "\r" or line.empty()) {
-                std::cout << "Elf number: " << elvesCalories.size() + 1 << " harvested " << calories << " calories."
-                          << '\n';
+//                std::cout << "Elf number: " << elvesCalories.size() + 1 << " harvested " << calories << " calories."
+//                          << '\n';
                 elvesCalories.push(calories);
                 calories = 0;
             } else {
