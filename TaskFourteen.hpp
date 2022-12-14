@@ -51,17 +51,29 @@ public:
         parseInput();
         fetchRocksFromInputToTiles();
 
-        printTilesFromRange(494,503,0,9);
+        auto y_abyss = std::max_element(m_rockPositions.begin(), m_rockPositions.end(), [](auto lhs, auto rhs){
+            return lhs.second < rhs.second;
+        });
 
-        auto startingCoords = m_sandProducingHole;
-        for(int i = 0; i < 8; i++)
-        {
-            processMove(startingCoords);
-            printTilesFromRange(494,503,0,9);
-        }
+
+        auto sandQuantity =23;
+        for(auto i = 0; i < sandQuantity; i++)
+            sandFalls();
+
+        printTestMap();
 
         return {};
     }
+
+    void sandFalls() {
+        auto startingCoords = m_sandProducingHole;
+//        while(isPossibleToMove(startingCoords))
+//        for(int i = 0; i < 8; i++)
+//        {
+            processMove(startingCoords, max_y);
+//        }
+    }
+
     unsigned int solveSecondTask() override
     {
         return {};
@@ -98,21 +110,58 @@ private:
     }
 
     Coords m_sandProducingHole = {500,0};
-    unsigned int max_y = 100;
+    unsigned int max_y = 200;
     unsigned int max_x = 600;
 
     std::vector<std::vector<Tile>> m_tiles;
     std::vector<Coords> m_rockPositions;
 
-    void processMove(Coords& position)
+    void printTestMap()
+    {
+        printTilesFromRange(493,503,0,10);
+    }
+
+    void printWholeMap()
+    {
+        printTilesFromRange(490,max_x,0,max_y);
+    }
+
+    bool isPossibleToMove(const Coords& position)
+    {
+        return position.second != max_y;
+    }
+    void processMove(Coords& position, unsigned int yBoundary)
     {
         auto& [x, y] = position;
-
-        if(isTileEmpty({x,y+1}))
+        while(isTileEmpty({x,y+1}))
         {
             m_tiles[y][x] = Tile::air;
-            position.second += 1;
+            position.second++;
             m_tiles[y][x] = Tile::sand;
+        }
+
+        auto proposedLeftSide = std::make_pair(x-1,y+1);
+        while(isTileEmpty(proposedLeftSide))
+        {
+            m_tiles[y][x] = Tile::air;
+            position.first--;
+            position.second++;
+            m_tiles[y][x] = Tile::sand;
+
+            proposedLeftSide.first--;
+            proposedLeftSide.second++;
+        }
+
+        const auto& proposedRightSide = std::make_pair(x+1,y+1);
+        while(isTileEmpty(proposedRightSide))
+        {
+            m_tiles[y][x] = Tile::air;
+            position.first++;
+            position.second++;
+            m_tiles[y][x] = Tile::sand;
+
+            proposedLeftSide.first++;
+            proposedLeftSide.second++;
         }
     }
 
