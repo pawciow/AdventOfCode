@@ -48,11 +48,11 @@ void checkAll()
     Day8 task8;
     checkResults(task8, "inputs/taskEight.txt");
 
-//    Day9 task9;
-//    checkResults(task9, "inputs/taskNine.txt");
+    Day9 task9;
+    checkResults(task9, "inputs/taskNine.txt");
 
-//    Day11 task11;
-//    checkResults(task11, "inputs/taskEleven.txt");
+    Day11 task11;
+    checkResults(task11, "inputs/taskEleven.txt");
 
     Day12 task12;
     checkResults(task12, "inputs/taskTwelve.txt");
@@ -68,6 +68,6 @@ void checkAll()
 int main()
 {
     std::cout << "Hello, World!" << std::endl;
-    checkAll();
+//    checkAll(); // Be sure that You put all inputs with correct names in folder inputs/
     return 0;
 }

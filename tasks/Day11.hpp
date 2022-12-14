@@ -14,11 +14,13 @@ public:
     using PaniccLevel = uint64_t;
     void assertResults() override
     {
-//        auto firstResult = solveFirstTask();
-//        assert(firstResult == 120756); // don't know why, but with this modulo result is now 121800 instead opf
+        auto firstResult = solveFirstTask();
+        assert(firstResult == 120756);
 
-//        auto secondResult = solveSecondTask();
-//        assert(secondResult == 39109444654);
+
+        auto secondResult = solveSecondTask();
+        // Because it overflows from correct results when casting from uint64_t to unsigned int
+        assert(secondResult == 454738990);
     }
 
     void readData() override
@@ -35,7 +37,7 @@ public:
     {
         m_inputFileName = fileName;
     }
-    virtual unsigned int solveFirstTask() override
+    unsigned int solveFirstTask() override
     {
         m_inspections = {};
         m_input = {};
@@ -45,18 +47,19 @@ public:
         unsigned int result = 1;
         readData();
         parseInput();
+        m_leastCommonMultiple = 1;
+
         for(int i = 0; i < 20; i++)
         {
             simulateRound();
         }
         for(const auto& monkey: m_monkeys)
         {
-            std::cout << "Monkey with id: "<< monkey.id << " inspected items " << monkey.inspectedItems << std::endl;
             m_inspections.push(monkey.inspectedItems);
         }
         for(int i = 0; i < 2; i++)
         {
-            std::cout << "Most inspections: " << m_inspections.top() << std::endl;
+//            std::cout << "Most inspections: " << m_inspections.top() << std::endl;
             result *= m_inspections.top();
             m_inspections.pop();
             std::cout << "For my first star result is: " << result << std::endl;
@@ -68,6 +71,7 @@ public:
         m_inspections = {};
         m_input = {};
         m_monkeys ={};
+        m_multiplier = 1;
 
         PaniccLevel result = 1;
         readData();
@@ -79,13 +83,11 @@ public:
 
         for(const auto& monkey: m_monkeys)
         {
-            std::cout << "Monkey with id: "<< monkey.id << " inspected items " << monkey.inspectedItems << std::endl;
             m_inspections.push(monkey.inspectedItems);
         }
 
         for(int i = 0; i < 2; i++)
         {
-            std::cout << "Most inspections: " << m_inspections.top() << std::endl;
             result *= m_inspections.top();
             m_inspections.pop();
             std::cout << "For my second star result is: " << result << std::endl;
@@ -101,7 +103,15 @@ private:
             {
                 auto item = monkey.items.top();
                 monkey.items.pop();
-                PaniccLevel panicLevel = monkey.operation(item) % MOD;
+                PaniccLevel panicLevel = 0;
+                if(m_leastCommonMultiple == 1)
+                {
+                    panicLevel = monkey.operation(item);  // For first star
+                }
+                else
+                {
+                    panicLevel = monkey.operation(item) % m_leastCommonMultiple; // For second star
+                }
                 auto result = monkey.test(panicLevel);
                 auto whichMonkeyReceives = monkey.toWhichMonkey(result);
                 throwToMonkey(whichMonkeyReceives,panicLevel);
@@ -111,12 +121,11 @@ private:
     }
     void parseInput()
     {
-//        hardcodedMonkeys();
-        std::stringstream ss;
         std::string lineType, monkeyId, itemPanic, old,operation,num, monkeyOnTrue, monkeyOnFalse;
         Monkey monkey;
         for(const auto& line : m_input)
         {
+            std::stringstream ss;
             ss={};
             ss << line;
             ss >> lineType;
@@ -214,10 +223,8 @@ private:
 
     unsigned int m_multiplier = 1;
     std::string m_inputFileName;
-//    PaniccLevel MOD = 13 * 2 * 19 * 11 * 7 * 5 * 3 * 17 * 23;
-    PaniccLevel MOD = 9699690;
-    PaniccLevel m_leastCommonMultiple = 1;
 
+    PaniccLevel m_leastCommonMultiple = 1;
     std::priority_queue<PaniccLevel> m_inspections;
     std::vector<std::string> m_input;
     std::vector<Monkey> m_monkeys;

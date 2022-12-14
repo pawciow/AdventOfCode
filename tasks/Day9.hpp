@@ -26,8 +26,8 @@ public:
 
     void assertResults() override
     {
-//        auto firstResult = solveFirstTask();
-//        assert(firstResult == 6190);
+        auto firstResult = solveFirstTask();
+        assert(firstResult == 6190);
 
         auto secondResult = solveSecondTask();
         assert(secondResult == 2516);
@@ -56,6 +56,7 @@ public:
         unsigned int result = 0;
         readData();
         parseInput();
+
         while (not m_orders.empty())
         {
             auto order = m_orders.front();
@@ -179,15 +180,16 @@ private:
     void parseInput()
     {
         m_orders = {};
+        unsigned short amount;
         std::stringstream ss;
         std::string direction;
-        unsigned short amount;
         for(const auto el: m_input)
         {
             ss << el;
             ss >> direction >> amount;
             auto order = fetchOrder(direction,amount);
             m_orders.push(order);
+            ss.clear();
         }
     }
 
