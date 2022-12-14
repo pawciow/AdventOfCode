@@ -21,10 +21,12 @@ public:
     void assertResults() override
     {
         auto firstResult = solveFirstTask();
-        assert(firstResult == 698); // test
+//        assert(firstResult == 24); // test data
+        assert(firstResult == 698); //
 
         auto secondResult = solveSecondTask();
-//        assert(secondResult == 522);
+//        assert(secondResult == 93); // test data
+        assert(secondResult == 28594);
     }
 
     void readData() override
@@ -61,20 +63,42 @@ public:
             result++;
         }
 
-        printWholeMap();
-
+        std::cout << "For my first star result is: " << result << std::endl;
         return result;
     }
 
     bool sandFalls(unsigned int abyssThreshold)
     {
         auto startingCoords = m_sandProducingHole;
+        changedAnything = false;
         return processMove(startingCoords, abyssThreshold);
     }
 
     unsigned int solveSecondTask() override
     {
-        return {};
+        unsigned int result = 1; // it needs one more to fill the hole
+        m_tiles = {};
+        m_rockPositions={};
+        readData();
+        parseInput();
+
+        auto floorWidth = (std::max_element(m_rockPositions.begin(), m_rockPositions.end(), [](const auto& lhs, const auto & rhs)
+        {
+            return lhs.second < rhs.second;
+        }))->second + 2;
+
+        createEmptyTiles();
+        fetchRocksFromInputToTiles();
+        fetchFloor(floorWidth);
+
+        while(sandFalls(max_y))
+        {
+            result++;
+        }
+
+        printWholeMap();
+        std::cout << "For my second star result is: " << result << std::endl;
+        return result;
     }
 
 private:
@@ -109,14 +133,16 @@ private:
 
     Coords m_sandProducingHole = {500,0};
     unsigned int max_y = 200;
-    unsigned int max_x = 600;
+    unsigned int max_x = 800;
 
     std::vector<std::vector<Tile>> m_tiles;
     std::vector<Coords> m_rockPositions;
+    std::string m_inputFileName;
+    std::vector<std::string> m_input;
 
     void printTestMap()
     {
-        printTilesFromRange(493,503,0,10);
+        printTilesFromRange(488,512,0,12);
     }
 
     void printWholeMap()
@@ -124,16 +150,15 @@ private:
         printTilesFromRange(0,max_x,0,max_y);
     }
 
-    bool isPossibleToMove(const Coords& position)
-    {
-        return position.second != max_y;
-    }
+    bool changedAnything = false;
     bool processMove(Coords& position, unsigned int yBoundary)
     {
         auto& [x, y] = position;
-        while(isTileEmpty({x,y+1})
+        while(y < max_y  and x < max_x and(
+                isTileEmpty({x,y+1})
                 or isTileEmpty({x-1,y+1})
-                or isTileEmpty({x+1,y+1}))
+                or isTileEmpty({x+1,y+1})
+                ))
         {
             if(y > yBoundary) // Means it went to the abyss
                 return false;
@@ -143,6 +168,7 @@ private:
                 m_tiles[y][x] = Tile::air;
                 position.second++;
                 m_tiles[y][x] = Tile::sand;
+                changedAnything = true;
                 continue;
             }
 
@@ -153,6 +179,7 @@ private:
                 position.first--;
                 position.second++;
                 m_tiles[y][x] = Tile::sand;
+                changedAnything = true;
                 continue;
             }
 
@@ -163,10 +190,11 @@ private:
                 position.first++;
                 position.second++;
                 m_tiles[y][x] = Tile::sand;
+                changedAnything = true;
                 continue;
             }
         }
-        return true;
+        return changedAnything;
     }
 
     bool isTileEmpty(const Coords& position)
@@ -184,6 +212,15 @@ private:
         }
     }
 
+    void fetchFloor(unsigned int floorWidth)
+    {
+        auto y_pos = floorWidth;
+        for(auto& el: m_tiles[y_pos])
+        {
+            el = Tile::rock;
+        }
+    }
+
     void fetchRocksFromInputToTiles()
     {
         for(const auto& [x,y] : m_rockPositions)
@@ -195,18 +232,17 @@ private:
     void printTilesFromRange(const unsigned int x_low, const unsigned int x_high,
                              const unsigned int y_low,const unsigned int y_high)
     {
-        for(int it_y = y_low; it_y <= y_high; it_y++)
+        for(int it_y = y_low; it_y < y_high; it_y++)
         {
             std::cout << it_y << "  ";
-            for(auto it_x = x_low; it_x <= x_high; it_x++)
+            for(auto it_x = x_low; it_x < x_high; it_x++)
             {
                 std::cout << m_tiles[it_y][it_x];
             }
             std::cout << std::endl;
         }
     }
-    std::string m_inputFileName;
-    std::vector<std::string> m_input;
+
 
     void parseInput()
     {
