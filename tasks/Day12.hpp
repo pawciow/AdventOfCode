@@ -1,5 +1,5 @@
 #pragma once
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 #include <vector>
 #include <fstream>
 #include <iostream>
@@ -10,7 +10,7 @@
 #include <limits>
 #include <optional>
 
-class TaskTwelve : public TaskBase{
+class Day12 : public TaskBase{
 public:
     using Coords = std::pair<unsigned int, unsigned int>;
     void assertResults() override
@@ -80,9 +80,9 @@ public:
         {
             auto val = results.top();
             results.pop();
-            std::cout << " Results:" << val << " ";
+//            std::cout << " Results:" << val << " ";
         }
-        std::cout << "\n For my second star result is: " << result << std::endl;
+        std::cout << "For my second star result is: " << result << std::endl;
         return result;
     }
 private:
@@ -148,7 +148,7 @@ private:
         void calculateShortestPaths(Tile& startingTile)
         {
             auto end = findTile('E');
-            std::cout << " End at " << end.y <<  "," << end.x << std::endl;
+//            std::cout << " End at " << end.y <<  "," << end.x << std::endl;
 
             auto largestVisited = 'a';
             startingTile.shortestPath = 0;
@@ -172,7 +172,7 @@ private:
                     handleNeighbour(node.shortestPath, neighbour, tileQueue);
                 }
             }
-            std::cout << "Largest visited is: " << largestVisited << std::endl;
+//            std::cout << "Largest visited is: " << largestVisited << std::endl;
         }
 
         std::vector<std::optional<Coords>> getNeighbours(const Coords& tile)

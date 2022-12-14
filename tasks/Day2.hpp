@@ -1,9 +1,9 @@
 #pragma once
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 
-class SecondTask : public TaskBase{
+class Day2 : public TaskBase{
 private:
     enum class Actions{
         rock,

@@ -15,17 +15,17 @@ add_executable(
         ${PROJECT_NAME}
 
         main.cpp
-        FirstTask.hpp
-        SecondTask.hpp
-        TaskThree.hpp
+        tasks/Day1.hpp
+        tasks/Day2.hpp
+        tasks/Day3.hpp
         TaskBase.hpp
-        TaskFour.hpp
-        TaskFive.hpp
-        TaskSix.hpp
-        TaskSeven.hpp
-        TaskEight.hpp
-        TaskNine.hpp
-        TaskEleven.hpp TaskTwelve.hpp TaskThirteen.hpp TaskFourteen.hpp)
+        tasks/Day4.hpp
+        tasks/Day5.hpp
+        tasks/Day6.hpp
+        tasks/Day7.hpp
+        tasks/Day8.hpp
+        tasks/Day9.hpp
+        tasks/Day11.hpp tasks/Day12.hpp tasks/Day13.hpp tasks/Day14.hpp)
 
 target_include_directories(    ${PROJECT_NAME}
         PUBLIC

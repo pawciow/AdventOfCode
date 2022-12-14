@@ -2,11 +2,11 @@
 
 #include <cassert>
 #include <vector>
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 #include <fstream>
 #include <set>
 #include <algorithm>
-class TaskSix : public TaskBase{
+class Day6 : public TaskBase{
 public:
     void assertResults() override
     {

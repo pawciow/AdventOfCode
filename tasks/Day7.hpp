@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 #include <vector>
 #include <cassert>
 #include <fstream>
@@ -13,7 +13,7 @@
 #include <queue>
 #include <numeric>
 
-class TaskSeven : public TaskBase{
+class Day7 : public TaskBase{
 public:
     void assertResults() override {
         auto firstResult = solveFirstTask();

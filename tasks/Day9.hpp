@@ -1,5 +1,5 @@
 #pragma once
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 
 #include <vector>
 #include <cassert>
@@ -9,7 +9,7 @@
 #include <set>
 #include <math.h>
 
-class TaskNine : public TaskBase{
+class Day9 : public TaskBase{
 public:
 
     using Position = std::pair<int,int>;
@@ -26,8 +26,8 @@ public:
 
     void assertResults() override
     {
-        auto firstResult = solveFirstTask();
-        assert(firstResult == 6190);
+//        auto firstResult = solveFirstTask();
+//        assert(firstResult == 6190);
 
         auto secondResult = solveSecondTask();
         assert(secondResult == 2516);

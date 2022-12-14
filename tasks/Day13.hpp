@@ -1,5 +1,5 @@
 #pragma once
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 #include <vector>
 #include <fstream>
 #include <iostream>
@@ -12,7 +12,7 @@
 #include <variant>
 
 // Unfortunately the parsing was a nightmare, so I looked up to solution https://gist.github.com/ParadoxsHorizon/a5a783a3d867cc9151f0bc70a4bb4559#file-day13-cpp
-class TaskThirteen : public TaskBase {
+class Day13 : public TaskBase {
 
     struct Packets : std::variant<unsigned int, std::vector<Packets>>{
 
@@ -142,7 +142,6 @@ class TaskThirteen : public TaskBase {
         for(auto i = 0; i < m_data.size(); i++)
         {
             auto element = m_data[i];
-            std::cout << element << std::endl;
             if(element.compare(divider1) == std::weak_ordering::equivalent
                 or element.compare(divider2) == std::weak_ordering::equivalent)
             {

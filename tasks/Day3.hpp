@@ -5,10 +5,10 @@
 #include <iostream>
 #include <filesystem>
 #include <vector>
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 
 
-class TaskThree : public TaskBase{
+class Day3 : public TaskBase{
 public:
     void assertResults() override
     {
@@ -100,7 +100,7 @@ public:
         }
         std::cout << " For my second star result is: " << result << std::endl;
 
-        return 0;
+        return result;
     }
 private:
     std::string m_inputFileName;

@@ -7,9 +7,9 @@
 #include <functional>
 #include <stack>
 #include <queue>
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 
-class TaskEleven : public TaskBase{
+class Day11 : public TaskBase{
 public:
     using PaniccLevel = uint64_t;
     void assertResults() override
@@ -17,8 +17,8 @@ public:
 //        auto firstResult = solveFirstTask();
 //        assert(firstResult == 120756); // don't know why, but with this modulo result is now 121800 instead opf
 
-        auto secondResult = solveSecondTask();
-        assert(secondResult == 39109444654);
+//        auto secondResult = solveSecondTask();
+//        assert(secondResult == 39109444654);
     }
 
     void readData() override

@@ -1,5 +1,5 @@
 #pragma once
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 #include <vector>
 #include <fstream>
 #include <iostream>
@@ -15,7 +15,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
-class TaskFourteen : public TaskBase{
+class Day14 : public TaskBase{
 public:
     using Coords = std::pair<unsigned int, unsigned int>;
     void assertResults() override
@@ -96,7 +96,7 @@ public:
             result++;
         }
 
-        printWholeMap();
+//        printWholeMap();
         std::cout << "For my second star result is: " << result << std::endl;
         return result;
     }

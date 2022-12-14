@@ -1,64 +1,73 @@
 #include <iostream>
-#include "FirstTask.hpp"
-#include "SecondTask.hpp"
-#include "TaskThree.hpp"
-#include "TaskFour.hpp"
-#include "TaskFive.hpp"
+#include "tasks/Day1.hpp"
+#include "tasks/Day2.hpp"
+#include "tasks/Day3.hpp"
+#include "tasks/Day4.hpp"
+#include "tasks/Day5.hpp"
 #include <regex>
 #include <string>
-#include "TaskSix.hpp"
-#include "TaskSeven.hpp"
-#include "TaskEight.hpp"
-#include "TaskNine.hpp"
+#include "tasks/Day6.hpp"
+#include "tasks/Day7.hpp"
+#include "tasks/Day8.hpp"
+#include "tasks/Day9.hpp"
 
-#include "TaskEleven.hpp"
-#include "TaskTwelve.hpp"
-#include "TaskThirteen.hpp"
-#include "TaskFourteen.hpp"
+#include "tasks/Day11.hpp"
+#include "tasks/Day12.hpp"
+#include "tasks/Day13.hpp"
+#include "tasks/Day14.hpp"
 
 void checkResults(TaskBase& task, std::string fileName)
 {
     task.provideFileName(fileName);
     task.assertResults();
 }
-int main() {
+
+void checkAll()
+{
+//    Day1 task1;
+//    checkResults(task1, "inputs/taskOne.txt");
+
+    Day2 task2;
+    checkResults(task2, "inputs/taskTwo.txt");
+
+    Day3 task3;
+    checkResults(task3, "inputs/taskThree.txt");
+
+    Day4 task4;
+    checkResults(task4, "inputs/taskFour.txt");
+
+//    Day5 task5;
+//    checkResults(task5, "inputs/taskFive.txt");
+
+    Day6 task6;
+    checkResults(task6, "inputs/taskSix.txt");
+
+    Day7 task7;
+    checkResults(task7, "inputs/taskSeven.txt");
+
+    Day8 task8;
+    checkResults(task8, "inputs/taskEight.txt");
+
+//    Day9 task9;
+//    checkResults(task9, "inputs/taskNine.txt");
+
+//    Day11 task11;
+//    checkResults(task11, "inputs/taskEleven.txt");
+
+    Day12 task12;
+    checkResults(task12, "inputs/taskTwelve.txt");
+
+    Day13 task13;
+    checkResults(task13, "inputs/taskThirteen.txt");
+
+    Day14 task14;
+    checkResults(task14, "inputs/taskFourteen.txt");
+}
+
+
+int main()
+{
     std::cout << "Hello, World!" << std::endl;
-
-//    FirstTask task;
-//    checkResults(task, "inputs/taskOne.txt");
-
-//    SecondTask task;
-//    checkResults(task, "inputs/taskTwo.txt");
-
-//    TaskThree task;
-//    checkResults(task, "inputs/taskThree.txt");
-
-//    TaskFour task;
-//    checkResults(task, "inputs/taskFour.txt");
-//
-//    TaskFive task;
-//    checkResults(task, "inputs/taskFive.txt");
-
-//    TaskSix task;
-//    checkResults(task, "inputs/taskSix.txt");
-
-//    TaskSeven task;
-//    checkResults(task, "inputs/taskSeven.txt");
-
-//    TaskEight task;
-//    checkResults(task, "inputs/taskEight.txt");
-
-//    TaskEleven task;
-//    checkResults(task, "inputs/taskEleven.txt");
-
-//    TaskTwelve task;
-//    checkResults(task, "inputs/taskTwelve.txt");
-
-//    TaskThirteen task;
-//    checkResults(task, "inputs/taskThirteen.txt");
-
-    TaskFourteen task;
-    checkResults(task, "inputs/taskFourteen.txt");
-
+    checkAll();
     return 0;
 }

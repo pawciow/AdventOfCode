@@ -9,9 +9,9 @@
 #include <vector>
 #include <queue>
 #include <cassert>
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 
-class FirstTask : public TaskBase{
+class Day1 : public TaskBase{
 public:
     void provideFileName(std::string fileName) override
     {

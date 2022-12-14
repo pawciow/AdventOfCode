@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 #include <vector>
 #include <stack>
 #include <cassert>
@@ -8,7 +8,7 @@
 #include <queue>
 #include <ranges>
 
-class TaskFive : public TaskBase{
+class Day5 : public TaskBase{
 public:
 
     struct MoveOrder{

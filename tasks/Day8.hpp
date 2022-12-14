@@ -6,17 +6,17 @@
 #include <fstream>
 #include <algorithm>
 
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 
-class TaskEight : public TaskBase{
+class Day8 : public TaskBase{
 public:
     void assertResults() override
     {
         auto firstResult = solveFirstTask();
-//        assert(firstResult == 1715);
+        assert(firstResult == 1715);
 
         auto secondResult = solveSecondTask();
-        assert(secondResult == 0);
+        assert(secondResult == 374400);
     }
 
     void readData() override

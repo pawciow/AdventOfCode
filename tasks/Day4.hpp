@@ -3,18 +3,18 @@
 #include <cassert>
 #include <vector>
 #include <fstream>
-#include "TaskBase.hpp"
+#include "../TaskBase.hpp"
 #include <algorithm>
 
-class TaskFour : public TaskBase{
+class Day4 : public TaskBase{
 public:
     void assertResults() override
     {
-//        auto firstResult = solveFirstTask();
-//        assert(firstResult == 448);
+        auto firstResult = solveFirstTask();
+        assert(firstResult == 448);
 
         auto secondResult = solveSecondTask();
-        assert(secondResult == 0);
+        assert(secondResult == 794);
     }
 
     void provideFileName(std::string fileName) override
