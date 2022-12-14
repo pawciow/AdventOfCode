@@ -24,8 +24,8 @@ void checkResults(TaskBase& task, std::string fileName)
 
 void checkAll()
 {
-//    Day1 task1;
-//    checkResults(task1, "inputs/taskOne.txt");
+    Day1 task1;
+    checkResults(task1, "inputs/taskOne.txt");
 
     Day2 task2;
     checkResults(task2, "inputs/taskTwo.txt");
