@@ -21,7 +21,7 @@ public:
     void assertResults() override
     {
         auto firstResult = solveFirstTask();
-        assert(firstResult == 24); // test
+        assert(firstResult == 698); // test
 
         auto secondResult = solveSecondTask();
 //        assert(secondResult == 522);
@@ -60,7 +60,8 @@ public:
         {
             result++;
         }
-        printTestMap();
+
+        printWholeMap();
 
         return result;
     }
@@ -120,7 +121,7 @@ private:
 
     void printWholeMap()
     {
-        printTilesFromRange(490,max_x,0,max_y);
+        printTilesFromRange(0,max_x,0,max_y);
     }
 
     bool isPossibleToMove(const Coords& position)
@@ -219,15 +220,12 @@ private:
             {
                 std::vector<std::string> coords; // std::views::split not works
                 boost::split(coords, el, boost::is_any_of(","));
-                if(coords.size() == 2)
-                {
-                    rockPositionsContours.push_back({std::stoi(coords[0]),std::stoi(coords[1])});
-                }
+                rockPositionsContours.push_back({std::stoi(coords[0]),std::stoi(coords[1])});
             }
 
             if(not rockPositionsContours.empty())
             {
-                for(auto it = 0; it < rockPositionsContours.size() - 1; it++)
+                for(auto it = 0; it < rockPositionsContours.size(); it++)
                 {
                     auto [first_x, first_y] = rockPositionsContours[it];
                     auto [second_x, second_y] = rockPositionsContours[it+1];
