@@ -44,6 +44,7 @@ public:
 
     unsigned int solveFirstTask() override
     {
+        unsigned int result = 0;
         m_tiles = {};
         m_rockPositions={};
         readData();
@@ -55,23 +56,19 @@ public:
             return lhs.second < rhs.second;
         });
 
-
-        auto sandQuantity = 25;
-        for(auto i = 0; i < sandQuantity; i++)
-            sandFalls();
-
+        while(sandFalls(y_abyss->second))
+        {
+            result++;
+        }
         printTestMap();
 
-        return {};
+        return result;
     }
 
-    void sandFalls() {
+    bool sandFalls(unsigned int abyssThreshold)
+    {
         auto startingCoords = m_sandProducingHole;
-//        while(isPossibleToMove(startingCoords))
-//        for(int i = 0; i < 8; i++)
-//        {
-            processMove(startingCoords, max_y);
-//        }
+        return processMove(startingCoords, abyssThreshold);
     }
 
     unsigned int solveSecondTask() override
@@ -130,17 +127,16 @@ private:
     {
         return position.second != max_y;
     }
-    void processMove(Coords& position, unsigned int yBoundary)
+    bool processMove(Coords& position, unsigned int yBoundary)
     {
         auto& [x, y] = position;
-        auto isMovePossible =
-                isTileEmpty({x,y+1})
-                or isTileEmpty({x-1,y+1})
-                or isTileEmpty({x+1,y+1});
         while(isTileEmpty({x,y+1})
                 or isTileEmpty({x-1,y+1})
                 or isTileEmpty({x+1,y+1}))
         {
+            if(y > yBoundary) // Means it went to the abyss
+                return false;
+
             if(isTileEmpty({x,y+1}))
             {
                 m_tiles[y][x] = Tile::air;
@@ -169,6 +165,7 @@ private:
                 continue;
             }
         }
+        return true;
     }
 
     bool isTileEmpty(const Coords& position)
