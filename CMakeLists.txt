@@ -25,7 +25,7 @@ add_executable(
         tasks/Day7.hpp
         tasks/Day8.hpp
         tasks/Day9.hpp
-        tasks/Day11.hpp tasks/Day12.hpp tasks/Day13.hpp tasks/Day14.hpp)
+        tasks/Day11.hpp tasks/Day12.hpp tasks/Day13.hpp tasks/Day14.hpp tasks/Day15.hpp)
 
 target_include_directories(    ${PROJECT_NAME}
         PUBLIC

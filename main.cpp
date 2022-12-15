@@ -15,6 +15,7 @@
 #include "tasks/Day12.hpp"
 #include "tasks/Day13.hpp"
 #include "tasks/Day14.hpp"
+#include "tasks/Day15.hpp"
 
 void checkResults(TaskBase& task, std::string fileName)
 {
@@ -68,6 +69,10 @@ void checkAll()
 int main()
 {
     std::cout << "Hello, World!" << std::endl;
+
+    Day15 task15;
+    checkResults(task15, "inputs/taskFifteen.txt");
+
 //    checkAll(); // Be sure that You put all inputs with correct names in folder inputs/
     return 0;
 }
